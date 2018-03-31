@@ -3,6 +3,7 @@ package com.example.syama.mymemopp;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
@@ -76,7 +77,7 @@ public class MemoEditText extends EditText {
 
             Resources resources = context.getResources();
             TypedArray typedArray = context.obtainStyledAttributes(
-                    attrs, R.styleable.MemoEditTex);
+                    attrs, R.styleable.MemoEditText);
         }
         try {
             //属性に設定された値を取得
@@ -112,5 +113,44 @@ public class MemoEditText extends EditText {
 
         //色を指定
         mPaint.setColor(lineColor);
+    }
+
+    @Override
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        //横幅
+        mMeasuredWidth = getMeasuredWidth();
+        //高さ
+        int measureHeight = getMeasuredHeight();
+        //1行の高さ
+        mLineHeight = getLineHeight();
+
+        //画面内に何行表示できるか
+        mDisplayLineCount = measureHeight / mLineHeight;
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas){
+        //パディング
+        int paddingTop = getExtendedPaddingTop();
+        //Y軸方向にスクロールされている量
+        int scrollY = getScrollY();
+        //画面上に表示されている最初の行
+        int firstVisibleLine = getLayout().getLineForVertical(scrollY);
+        //画面上に表示される最後の行
+        int lastVisibleLine = firstVisibleLine + mDisplayLineCount;
+
+        mPath.reset();
+        for (int i = firstVisibleLine; i <= lastVisibleLine; i++){
+            //行の左端に移動
+            mPath.moveTo(0, i * mLineHeight + paddingTop);
+            //右端へ線を引く
+            mPath.lineto(mMeasuredWidth, i + mLineHeight + paddingTop);
+        }
+        //Pathの描画
+        canvas.drawPath(mPath, mPaint);
+
+        super.onDraw(canvas);
     }
 }

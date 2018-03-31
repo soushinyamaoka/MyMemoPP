@@ -2,20 +2,38 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.syama.mymemopp">
 
+    <!-- 外部ストレージ読み書きのためのパーミッション-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <!-- メモ帳Providerの読み込み権限を宣言する -->
+    <permission android:name="com.example.syama.mymemopp.memo.read"
+        android:protectionLevel="normal"
+        android:label="@string/permission_memo_read_label"
+        android:description="@string/permission_memo_read_description"/>
+
+    <!-- メモ帳Providerの書き込み権限を宣言する -->
+    <permission android:name="com.example.syama.mymemopp.memo.write"
+        android:protectionLevel="signature"
+        android:label="@string/permission_memo_write_label"
+        android:description="@string/permission_memo_write_description"/>
+
+    <!-- 作成したパーミッションの使用を宣言する -->
+    <uses-permission android:name="com.example.syama.mymemopp.memo.read"/>
+    <uses-permission android:name="com.example.syama.mymemopp.memo.write"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <!-- メモ管理用のProvider -->
+        <provider
+            android:authorities="com.example.syama.mymemopp.memo"
+            android:name=".MemoProvider"
+            android:writePermission="com.example.syama.mymemopp.memo.write"
+            android:readPermission="com.example.syama.mymemopp.memo.read"
+            android:exported="true" />
     </application>
 
 </manifest>
