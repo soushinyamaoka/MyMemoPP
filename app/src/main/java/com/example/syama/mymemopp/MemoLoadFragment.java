@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
-import java.util.Calendar;
-
 /**
  * Created by SoushinYamaoka on 2018/04/01.
  */
@@ -49,7 +47,7 @@ public class MemoLoadFragment extends ListFragment {
         Cursor cursor = MemoRepository.query(getActivity());
 
         //アダプターをセットする
-        MemoAdapter adapter = new MemoAdapter(getActivity(), cursor, true);
+        MemoAdapter mAdapter = new MemoAdapter(getActivity(), cursor, true);
         setListAdapter(mAdapter);
     }
 

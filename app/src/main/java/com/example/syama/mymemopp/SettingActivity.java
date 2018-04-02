@@ -29,7 +29,7 @@ public class SettingActivity extends Activity
     }
 
     @Override
-    public boolean onOptionItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item){
         if (item.getItemId() == android.R.id.home){
             //戻るボタンを押されたら、画面を閉じる
             this.finish();

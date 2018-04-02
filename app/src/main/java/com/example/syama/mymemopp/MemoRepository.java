@@ -65,7 +65,7 @@ public class MemoRepository {
 
     //出力ファイルを取得する
     private static File getFileName(Context context, File outputDir){
-        String fileNamePrefix = SettingPrefUtil.getFilenamePrefix(context);
+        String fileNamePrefix = SettingPrefUtil.getFileNamePrefix(context);
 
         Calendar now = Calendar.getInstance();
 
@@ -101,7 +101,7 @@ public class MemoRepository {
     }
 
     //メモを新規に保存する
-    public static Uri create(Context context, String  memo){
+    public static Uri create(Context context, String memo){
 
         //出力先ディレクトリを取得
         File outputDir = getOutputDir(context);

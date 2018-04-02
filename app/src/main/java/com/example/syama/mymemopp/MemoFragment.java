@@ -10,14 +10,29 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.AsyncTaskLoader;
+import android.app.LoaderManager;
 import android.widget.Toast;
+import android.content.Loader;
+import android.support.annotation.Nullable;
+import android.widget.Toast;
+
+import static com.example.syama.mymemopp.MemoActivity.BUNDLE_KEY_URI;
 
 /**
  * Created by SoushinYamaoka on 2018/04/01.
  */
 
-public class MemoFragment extends Fragment{
+public class MemoFragment extends Fragment implements LoaderManager.LoaderCallbacks{
     private MemoEditText mMemoEditText;
+
+    private Uri mMemoUri;
+
+    private static final int LOADER_SAVE_MEMO = 1;
+    private static final int LOADER_LOAD_MEMO = 2;
+
+    private static final String BUNDLE_KEY_URI = "uri";
+    private static final String BUNDLE_KEY_TEXT = "text";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,19 +77,14 @@ public class MemoFragment extends Fragment{
     }
 
     //保存する
-    public void save(){
-        if(mMemoUri != null){
-            //MemoのURIがあるということは、すでに一度保存したか、読み込んできたもの
-            //そのため、新規作成ではなく更新する
-            MemoRepository.update(getActivity(), mMemoUri,
-                    mMemoEditText.getText().toString());
-        } else {
-            //新規作成
-            MemoRepository.create(getActivity(),
-                    mMemoEditText.getText().toString());
-        }
-        //「保存しました」と表示する
-        Toast.makeText(getActivity(), "保存しました", Toast.LENGTH_SHORT).show();
+    public void save() {
+        // URIとメモ内容をBundleに詰める
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(BUNDLE_KEY_URI, mMemoUri);
+        bundle.putString(BUNDLE_KEY_TEXT, mMemoEditText.getText().toString());
+
+        // 保存用のLoaderを要求する
+        getLoaderManager().restartLoader(LOADER_SAVE_MEMO, bundle, this).forceLoad();
     }
 
     //読み込む

@@ -9,9 +9,9 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.widget.EditText;
-
-import java.nio.file.Path;
-import java.util.jar.Attributes;
+import android.graphics.Path;
+import android.graphics.Rect;
+import android.util.Log;
 
 /**
  * Created by syama on 2018/03/29.
@@ -70,7 +70,7 @@ public class MemoEditText extends EditText {
 
         //インスタンス生成時に、属性情報が渡されている場合
         //かつ、Android Studioのプレビューではない場合
-        if(attrs != null && !isInEditMode()){
+        if(attrs != null && !isInEditMode()) {
             //属性情報を取得
             int lineEffectBit;
             int lineColor;
@@ -78,41 +78,42 @@ public class MemoEditText extends EditText {
             Resources resources = context.getResources();
             TypedArray typedArray = context.obtainStyledAttributes(
                     attrs, R.styleable.MemoEditText);
-        }
-        try {
-            //属性に設定された値を取得
-            lineEffectBit = typeArray.getInteger(
-                    R.styleable.MemoEditText_lineEffect, SOLID);
-            lineColor = typedArray.getColor(
-                    R.styleable.MemoEditText_LineColor, Color.GRAY);
-        }finally {
-            //必ずrecycle()を呼ぶ
-            typedArray.recycle();
-        }
 
-        //罫線のエフェクトを設定
-        if((lineEffectBit & DASH) == DASH){
-            //破線が設定されている場合
-            DashPathEffect effect = new DashPathEffect(new float[]{
-                    resources.getDimension(R.dimen.text_rule_interval_on),
-                    resources.getDimension(R.dimen.text_rule_interval_off)},
-                    Of);
-            mPaint.setPathEffect(effect);
-        }
+            try {
+                //属性に設定された値を取得
+                lineEffectBit = typedArray.getInteger(
+                        R.styleable.MemoEditText_lineEffect, SOLID);
+                lineColor = typedArray.getColor(
+                        R.styleable.MemoEditText_lineColor, Color.GRAY);
+            } finally {
+                //必ずrecycle()を呼ぶ
+                typedArray.recycle();
+            }
 
-        float strokeWifth;
-        if((lineEffectBit & BOLD) == BOLD){
-            //太線が設定されている場合
-            strokeWifth = resources.getDimension(
-                    R.dimen.text_rule_width_bold);
-        }else{
-            strokeWifth = resources.getDimension(
-                    R.dimen.text_rule_width_normal);
-        }
-        mPaint.setStrokeWidth(strokeWifth);
+            //罫線のエフェクトを設定
+            if ((lineEffectBit & DASH) == DASH) {
+                //破線が設定されている場合
+                DashPathEffect effect = new DashPathEffect(new float[]{
+                        resources.getDimension(R.dimen.text_rule_interval_on),
+                        resources.getDimension(R.dimen.text_rule_interval_off)},
+                        0f);
+                mPaint.setPathEffect(effect);
+            }
 
-        //色を指定
-        mPaint.setColor(lineColor);
+            float strokeWifth;
+            if ((lineEffectBit & BOLD) == BOLD) {
+                //太線が設定されている場合
+                strokeWifth = resources.getDimension(
+                        R.dimen.text_rule_width_bold);
+            } else {
+                strokeWifth = resources.getDimension(
+                        R.dimen.text_rule_width_normal);
+            }
+            mPaint.setStrokeWidth(strokeWifth);
+
+            //色を指定
+            mPaint.setColor(lineColor);
+        }
     }
 
     @Override
@@ -146,7 +147,7 @@ public class MemoEditText extends EditText {
             //行の左端に移動
             mPath.moveTo(0, i * mLineHeight + paddingTop);
             //右端へ線を引く
-            mPath.lineto(mMeasuredWidth, i + mLineHeight + paddingTop);
+            mPath.lineTo(mMeasuredWidth, i + mLineHeight + paddingTop);
         }
         //Pathの描画
         canvas.drawPath(mPath, mPaint);

@@ -38,7 +38,7 @@ public class MemoAdapter extends CursorAdapter {
         View view = mInflater.inflate(R.layout.memo_list_row, null);
 
         //View内の各項目への参照を保持するためのViewHolderを作り、設定する
-        ViewHolder holder = new ViewHolder();
+        ViewHolder holder = new ViewHolder(view);
 
         //タグとして入れておく
         view.setTag(holder);

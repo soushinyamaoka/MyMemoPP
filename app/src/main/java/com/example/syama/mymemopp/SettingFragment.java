@@ -28,7 +28,7 @@ public class SettingFragment extends PreferenceFragment
 
         //ファイル名を指定する
         getPreferenceManager().setSharedPreferencesName(
-                SettingRepository.PREF_FILE_NAME);
+                SettingPrefUtil.PREF_FILE_NAME);
 
         //Preferencesの設定ファイルを指定
         addPreferencesFromResource(R.xml.preferences);
@@ -39,7 +39,7 @@ public class SettingFragment extends PreferenceFragment
         super.onActivityCreated(savedInstanceState);
 
         //サマリーを更新
-        setTypefaceSummary(getPreferenceManager().setSharedPreferences());
+        setTypefaceSummary(getPreferenceManager().getSharedPreferences());
         setPrefixSummary(getPreferenceManager().getSharedPreferences());
     }
 
@@ -62,7 +62,7 @@ public class SettingFragment extends PreferenceFragment
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences prefs,
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key){
         //アクティビティを取得
         Activity activity = getActivity();

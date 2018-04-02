@@ -1,15 +1,12 @@
 package com.example.syama.mymemopp;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
         implements MemoLoadFragment.MemoLoadFragmentListener,
@@ -34,14 +31,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu){
         //メニューを生成する
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSlected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
 
         switch (id) {

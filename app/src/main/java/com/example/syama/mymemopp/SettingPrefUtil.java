@@ -22,7 +22,7 @@ public class SettingPrefUtil {
     private static final String KEY_FILE_NAME_PREFIX_DEFAULT = "memo";
 
     //ファイル名プレフィックスの値を取得する
-    private static String getFileNamefix(Context context){
+    private static String getFileNamePrefix(Context context){
         //SharedPreferencesを取得
         SharedPreferences sp = context.getSharedPreferences(
                 PREF_FILE_NAME, Context.MODE_PRIVATE);
